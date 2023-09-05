@@ -1,0 +1,135 @@
+<template>
+  <div>
+    <button class="back" v-if="showBackButton" @click="goBack">Назад</button>
+    <ul :class="{active: active}">
+      <li v-for="item in currentMenu" :key="item.title">
+        <button @click="navigate(item)" :class="{'slide-in': !showSubMenu, 'slide-out': showSubMenu, next: item.children}"><span class="menu-item-name">{{ item.title }}</span></button>
+        <Menu v-if="item.children" :menu-items="item.children"></Menu>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import Menu from "@/components/Menu.vue"; // Используйте имя вашего компонента SubMenu
+export default {
+  props: {
+    menuItems: Array,
+  },
+  data() {
+    return {
+      currentMenu: this.menuItems,
+      showBackButton: false,
+      currentSubMenu: [],
+      active: false
+    };
+  },
+  methods: {
+    navigate(item) {
+      if (item.children) {
+        this.showBackButton = true;
+        this.currentSubMenu.push(this.currentMenu);
+        this.currentMenu = item.children;
+        this.active = true;
+      } else {
+        window.location.href = item.url;
+        this.showBackButton = false;
+      }
+      
+    },
+    goBack() {
+      if (this.currentSubMenu.length > 0) {
+        this.currentMenu = this.currentSubMenu.pop();
+        if(this.currentSubMenu.length == 0) {
+            this.showBackButton = false;
+        }
+         
+        this.showSubMenu = false;
+      }
+     
+    },
+  },
+};
+</script>
+
+<style scoped>
+li ul{
+    display: none; 
+}
+li{
+    list-style: none; 
+}
+
+li button{
+    border: none; 
+    border-bottom: 1px solid #eee; 
+    background: #fff; 
+    padding: 7px 7px; 
+    width: 100%; 
+    font-size:1.2rem; 
+}
+button.back{
+    border: 1px solid #eee; 
+    background: #eee; 
+    padding: 7px 7px; 
+    width: 100%;
+    font-size:1.2rem;  
+}
+
+.next .menu-item-name:before, .next .menu-item-name:after {
+    border-right: 2px solid;
+    content: '';
+    display: block;
+    height: 8px;
+    margin-top: -6px;
+    position: absolute;
+    -moz-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+    right: 10px;
+    top: 50%;
+    width: 0;
+}
+
+.next .menu-item-name:after {
+    margin-top: -1px;
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.slide-in {
+  animation: slideIn 0.3s forwards;
+}
+
+.slide-out {
+  animation: slideOut 0.3s forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: 1s; 
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    transition: 1s; 
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    transition: 1s; 
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: 1s; 
+  }
+}
+</style>
