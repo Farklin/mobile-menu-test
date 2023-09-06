@@ -53,22 +53,37 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+body{
+  padding: 0;
+  margin: 0 !important;
+}
+ul{
+  padding: 0;
+  margin: 0
+}
 .menu {
+  padding-top: 1rem; 
   position: static;
   top: 0;
   display: none;
 }
 .menu.active {
+  margin: 0; 
   display: block;
+  height: 100vh; 
+  background: #fff;
+  z-index: 1;
 }
 .menu-hamburger {
   position: static;
-  height: 40px;
+  height: 50px; 
+  background: #7c6a54e8; 
 }
 
 #hamburger {
   position: absolute;
+  top: 1rem;
   right: 1rem;
   width: 30px; /* Ширина кнопки */
   height: 19px; /* Высота кнопки */
@@ -84,7 +99,7 @@ export default {
 #hamburger div {
   width: 100%; /* Ширина полоски */
   height: 3px; /* Высота полоски */
-  background-color: #111; /* Цвет полоски */
+  background-color: #fff; /* Цвет полоски */
   transition: 0.4s; /* Плавное изменение при анимации */
 }
 
