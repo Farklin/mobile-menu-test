@@ -3,7 +3,7 @@
     <button class="back" v-if="showBackButton" @click="goBack">Назад</button>
     <ul :class="{active: active}">
       <li v-for="item in currentMenu" :key="item.title">
-        <button @click="navigate(item)" :class="{'slide-in': !showSubMenu, 'slide-out': showSubMenu, next: item.children}"><span class="menu-item-name">{{ item.title }}</span></button>
+        <div class="menu-link" :class="{next: item.children}"><button @click="goLink(item)" :class="{'slide-in': !showSubMenu, 'slide-out': showSubMenu}">{{ item.title }}</button><span class="menu-item-name" @click="navigate(item)">  </span></div>
         <Menu v-if="item.children" :menu-items="item.children"></Menu>
       </li>
     </ul>
@@ -24,6 +24,9 @@ export default {
       active: false
     };
   },
+  mounted(){
+
+  }, 
   methods: {
     navigate(item) {
       if (item.children) {
@@ -37,6 +40,9 @@ export default {
       }
       
     },
+    goLink(item){
+      window.location.href = item.url;
+    }, 
     goBack() {
       if (this.currentSubMenu.length > 0) {
         this.currentMenu = this.currentSubMenu.pop();
@@ -62,12 +68,25 @@ li{
 
 li button{
     border: none; 
-    border-bottom: 1px solid #eee; 
-    background: #fff; 
+
+    background: transparent; 
     padding: 7px 7px; 
-    width: 100%; 
     font-size:1.2rem; 
 }
+
+.menu-link{
+  width: 100%; 
+  display: flex;
+  border-bottom: 1px solid #eee; 
+  justify-content: center;
+}
+.menu-link span{
+  width: 30px; 
+  display: block; 
+  position: relative;
+}
+
+
 button.back{
     border: 1px solid #eee; 
     background: #eee; 
